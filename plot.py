@@ -271,7 +271,7 @@ def compare_overlapping_screen():
 
 def filter_data():
     # import data
-    data = pd.read_csv('test-data.csv')
+    data = pd.read_csv('data/ink-2.7mm-1m-length/0.01m-7.csv')
     df = data[0:10]
 
     table = FF.create_table(df)
@@ -291,7 +291,7 @@ def filter_data():
 
     trace_data = [trace1]
     fig = go.Figure(data=trace_data, layout=layout)
-    plotly.offline.plot(fig, filename='raw-data-plot')
+    #plotly.offline.plot(fig, filename='raw-data-plot')
 
     # low-pass filter
     fc = 0.1
@@ -335,7 +335,7 @@ def main():
     # filter_data()
     # 1, 3, 4, 10, 11, 13
     # compare_overlapping_touching('13')
-    compare_data('ink-4mm-1m-length')
+    compare_data('1-1.5m-length')
     # compare_overlapping_screen()
 
 

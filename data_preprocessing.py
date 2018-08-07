@@ -97,11 +97,12 @@ def main():
     #     convert_file(file_name, new, [6, 7, 8, 9])
     # draw_chart()
 
-    path = "data/ink-4mm-1m-length"
+    path = "data/ink-2.7mm-1m-length"
     files = os.listdir(path)
     for file in files:
         if file[-3:] == 'txt':
-            convert_file(path + '/' + file, path + '/' + file[:-4] + '-7.csv', [7])
+            num = file[file.find('-') + 1:-4]
+            convert_file(path + '/' + file, path + '/' + file[:-4] + '.csv', [int(num)])
 
     # path = "data/overlapping"
     # files = os.listdir(path)

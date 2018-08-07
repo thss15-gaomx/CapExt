@@ -85,7 +85,6 @@ def detect_diff():
     new_signal2 = np.delete(new_signal2, -1, 0)
     diff = new_signal - new_signal2
     index = np.where(np.logical_and(diff > 5, diff < 1000))
-    # index = np.where(diff >= 20) and np.where(diff <= 100)
     points = []
     for item in index[0]:
         points.append(
