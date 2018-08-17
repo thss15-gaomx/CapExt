@@ -8,18 +8,24 @@ from mpl_toolkits.mplot3d import Axes3D
 import time
 import os
 
-# (10, 1): 304   32(i- 1）+ 16j  (i from 0, j from 1)
-# total: 577
 
 
 def convert_time(origin_time):
     date_time, millisecond = origin_time.split('.')
     return time.mktime(time.strptime(date_time, '%Y/%m/%d-%H:%M:%S')) + float(millisecond) / 1000
 
-
+# (10, 1): 304   32(i- 1）+ 16j  (i from 0, j from 1)
+# total: 577
 def count_index(num):
     index = [49, 81, 113, 145, 177, 209, 225, 241, 257, 273, 305, 337, 369, 401, 433]
     return index[num]
+
+
+# for 0<=i<32: point_value[i] = raw_diff_data[i*col_num]
+# for 32<=i<47: point_value[i] = raw_diff_data[(row_num-1)*col_num+i-row_num+1], where row_num=32 and col_num=16
+def count_index2(num):
+    col_num = 16
+    return col_num * num + 1
 
 
 def dict2list(dic:dict):
@@ -42,10 +48,10 @@ def convert_file(origin_file, new_file, points):
                 time = convert_time(content[0])
                 value = []
                 for point in points:
-                    value.append(content[count_index(point)])
+                    value.append(content[count_index2(point)])
                 data[time] = value
 
-        f.write('time,value\n')
+        f.write('time,14,15\n')
         for item in sorted(dict2list(data), key=lambda x: x[0], reverse=False):
             f.write(str(item[0]))
             for point in item[1]:
@@ -97,12 +103,12 @@ def main():
     #     convert_file(file_name, new, [6, 7, 8, 9])
     # draw_chart()
 
-    path = "data/ink-2.7mm-1m-length"
+    path = "data/ito-2-2m-length"
     files = os.listdir(path)
     for file in files:
         if file[-3:] == 'txt':
-            num = file[file.find('-') + 1:-4]
-            convert_file(path + '/' + file, path + '/' + file[:-4] + '.csv', [int(num)])
+            # num = file[file.find('-') + 1:-4]
+            convert_file(path + '/' + file, path + '/' + file[:-4] + '-14,15.csv', [14, 15])
 
     # path = "data/overlapping"
     # files = os.listdir(path)

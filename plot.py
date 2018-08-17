@@ -13,7 +13,7 @@ from scipy import signal
 
 
 def low_pass(data):
-    fc = 0.05
+    fc = 0.04
     b = 0.08
     N = int(np.ceil((4 / b)))
     if not N % 2: N += 1
@@ -219,13 +219,13 @@ def compare_data(folder):
     for file in files:
         if file[-3:] == 'csv':
             data = pd.read_csv(path + '/' + file)
-            s = list(data['value'])
+            s = list(data['15'])
             new_signal = low_pass(s)
             trace = go.Scatter(
                 x=np.arange(len(new_signal)),
                 y=new_signal,
                 mode='lines',
-                name=file[:-6],
+                name=file[:-10],
                 marker=dict(
                     color=get_color()
                 )
@@ -244,8 +244,8 @@ def compare_data(folder):
 def compare_overlapping_screen():
     trace_data = []
 
-    data = pd.read_csv("data/overlapping3*3-1/all-0,2,4,10,12,14.csv")
-    points = ['0', '2', '4', '10', '12', '14']
+    data = pd.read_csv("data/overlapping6*6-1/line1-6*6.csv")
+    points = ['2', '4', '6', '8', '10', '12', '18', '20', '22', '24', '26', '28']
     for point in points:
         s = list(data[point])
         new_signal = low_pass(s)
@@ -261,12 +261,12 @@ def compare_overlapping_screen():
         trace_data.append(trace)
 
     layout = go.Layout(
-        title='overlapping 3*3-all',
+        title='overlapping 6*6-line1',
         showlegend=True
     )
 
     fig = go.Figure(data=trace_data, layout=layout)
-    plotly.offline.plot(fig, filename='overlapping 3*3-all')
+    plotly.offline.plot(fig, filename='overlapping 6*6-line1.html')
 
 
 def filter_data():
@@ -335,7 +335,7 @@ def main():
     # filter_data()
     # 1, 3, 4, 10, 11, 13
     # compare_overlapping_touching('13')
-    compare_data('1-1.5m-length')
+    compare_data('ito-2-2m-length')
     # compare_overlapping_screen()
 
 

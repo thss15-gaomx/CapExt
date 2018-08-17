@@ -134,7 +134,7 @@ def draw_raw():
 def main():
     detect_diff()
     # high_pass()
-    #draw_raw()
+    # draw_raw()
 
 
 main()
