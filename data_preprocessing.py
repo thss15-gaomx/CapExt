@@ -51,7 +51,38 @@ def convert_file(origin_file, new_file, points):
                     value.append(content[count_index2(point)])
                 data[time] = value
 
-        f.write('time,14,15\n')
+        f.write('time,2,4,6,8,10,12,14,16,18,20,22,24,26,28\n')
+        for item in sorted(dict2list(data), key=lambda x: x[0], reverse=False):
+            f.write(str(item[0]))
+            for point in item[1]:
+                f.write(',' + point)
+            f.write('\n')
+
+    f.close()
+
+
+
+def convert_full_screen(origin_file, new_file):
+    file = open(origin_file)
+    with open(new_file, "w") as f:
+        data = {}
+        while 1:
+            lines = file.readlines(10000)
+            if not lines:
+                break
+            for line in lines:
+                content = line.split(' ')
+                time = convert_time(content[0])
+                data[time] = content[1:-65]
+
+        title_string = 'time'
+        for row in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                    16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]:
+            for column in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+                index = row * 16 + column
+                title_string += ',' + str(index)
+        title_string += '\n'
+        f.write(title_string)
         for item in sorted(dict2list(data), key=lambda x: x[0], reverse=False):
             f.write(str(item[0]))
             for point in item[1]:
@@ -103,12 +134,15 @@ def main():
     #     convert_file(file_name, new, [6, 7, 8, 9])
     # draw_chart()
 
-    path = "data/ito-2-2m-length"
-    files = os.listdir(path)
-    for file in files:
-        if file[-3:] == 'txt':
-            # num = file[file.find('-') + 1:-4]
-            convert_file(path + '/' + file, path + '/' + file[:-4] + '-14,15.csv', [14, 15])
+    # path = "data/yogamat"
+    # files = os.listdir(path)
+    # for file in files:
+    #     if file[-3:] == 'txt':
+    #         # num = file[file.find('-') + 1:-4]
+    #         convert_file(path + '/' + file, path + '/' + file[:-4] + '.csv', [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28])
+
+    # full screen
+    convert_full_screen("data/3-1.5m-length/3-0.01m.txt", "data/3-1.5m-length/3-0.01m-full.csv")
 
     # path = "data/overlapping"
     # files = os.listdir(path)

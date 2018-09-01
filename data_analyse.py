@@ -53,7 +53,7 @@ def high_pass():
 
 
 def detect_diff():
-    data = pd.read_csv('data/material/plastic bottle with 500ml water-7.csv')
+    data = pd.read_csv('data/material/hand-7.csv')
     x = np.arange(len(list(data['time'])))
 
     # low-pass filter
@@ -84,7 +84,7 @@ def detect_diff():
     new_signal2 = np.insert(new_signal, 0, 0)
     new_signal2 = np.delete(new_signal2, -1, 0)
     diff = new_signal - new_signal2
-    index = np.where(np.logical_and(diff > 5, diff < 1000))
+    index = np.where(np.logical_and(diff > 10, diff < 1000))
     points = []
     for item in index[0]:
         points.append(
@@ -112,7 +112,7 @@ def detect_diff():
 
 
 def draw_raw():
-    data = pd.read_csv('data/material/iphone 7 plus back-7.csv')
+    data = pd.read_csv('data/material/hand-7.csv')
     x = np.arange(len(list(data['time'])))
 
     trace1 = go.Scatter(

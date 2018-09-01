@@ -219,13 +219,13 @@ def compare_data(folder):
     for file in files:
         if file[-3:] == 'csv':
             data = pd.read_csv(path + '/' + file)
-            s = list(data['15'])
+            s = list(data['value'])
             new_signal = low_pass(s)
             trace = go.Scatter(
                 x=np.arange(len(new_signal)),
                 y=new_signal,
                 mode='lines',
-                name=file[:-10],
+                name=file[:-3],
                 marker=dict(
                     color=get_color()
                 )
@@ -238,14 +238,14 @@ def compare_data(folder):
     )
 
     fig = go.Figure(data=trace_data, layout=layout)
-    plotly.offline.plot(fig, filename=folder + '.html')
+    plotly.offline.plot(fig, filename=folder + '2.html')
 
 
 def compare_overlapping_screen():
     trace_data = []
 
-    data = pd.read_csv("data/overlapping6*6-1/line1-6*6.csv")
-    points = ['2', '4', '6', '8', '10', '12', '18', '20', '22', '24', '26', '28']
+    data = pd.read_csv("data/yogamat/1,2.csv")
+    points = ['2', '4', '6', '8', '10', '12', '14', '16', '18', '20', '22', '24', '26', '28']
     for point in points:
         s = list(data[point])
         new_signal = low_pass(s)
@@ -261,12 +261,12 @@ def compare_overlapping_screen():
         trace_data.append(trace)
 
     layout = go.Layout(
-        title='overlapping 6*6-line1',
+        title='yogamat',
         showlegend=True
     )
 
     fig = go.Figure(data=trace_data, layout=layout)
-    plotly.offline.plot(fig, filename='overlapping 6*6-line1.html')
+    plotly.offline.plot(fig, filename='yogamat.html')
 
 
 def filter_data():
@@ -328,6 +328,214 @@ def filter_data():
     plotly.offline.plot(fig, filename='low-pass-filter')
 
 
+def length_test_on_width_material():
+    length = [0.01, 0.02, 0.05, 0.1, 0.25, 0.5, 0.75, 1]
+
+    copper_half = [625, 560, 467, 215, 90, 45, 30, 20]
+    copper_1 = [880, 685, 425, 240, 110, 70, 44, 32]
+    copper_2 = [1020, 830, 400, 135, 180, 110, 60, 47]   # 0.05, 0.1
+
+    ink_half = []
+    ink_1 = [650, 633, 388, 357, 200, 95, 65, 35]
+    ink_2 = [825, 690, 512, 337, 129, 82, 65, 41]
+
+    ito_half = [500, 460, 300, 163, 80, 60, 45, 25]
+    ito_1 = [720, 665, 550, 355, 263, 132, 90, 68]
+    ito_2 = [778, 525, 500, 311, 150, 85, 55, 36]   #0.02
+
+    trace_copper_half = go.Scatter(
+        x=length,
+        y=copper_half,
+        mode='lines',
+        name='copper-0.5',
+        line=dict(
+            color='rgb(205, 12, 24)',
+            width=2,
+            dash='dash')
+    )
+
+    trace_copper_1 = go.Scatter(
+        x=length,
+        y=copper_1,
+        mode='lines',
+        name='copper-1',
+        line=dict(
+            color='rgb(205, 12, 24)',
+            width=2,
+            dash='dot')
+    )
+
+    trace_copper_2 = go.Scatter(
+        x=length,
+        y=copper_2,
+        mode='lines',
+        name='copper-2',
+        line=dict(
+            color='rgb(205, 12, 24)',
+            width=2)
+    )
+
+    trace_ink_1 = go.Scatter(
+        x=length,
+        y=ink_1,
+        mode='lines',
+        name='ink-1',
+        line=dict(
+            color='rgb(22, 96, 167)',
+            width=2,
+            dash='dot')
+    )
+
+    trace_ink_2 = go.Scatter(
+        x=length,
+        y=ink_2,
+        mode='lines',
+        name='ink-2',
+        line=dict(
+            color='rgb(22, 96, 167)',
+            width=2)
+    )
+
+    trace_ito_half = go.Scatter(
+        x=length,
+        y=ito_half,
+        mode='lines',
+        name='ito-0.5',
+        line=dict(
+            color='rgb(0,100,80)',
+            width=2,
+            dash='dash')
+    )
+
+    trace_ito_1 = go.Scatter(
+        x=length,
+        y=ito_1,
+        mode='lines',
+        name='ito-1',
+        line=dict(
+            color='rgb(0,100,80)',
+            width=2,
+            dash='dot')
+    )
+
+    trace_ito_2 = go.Scatter(
+        x=length,
+        y=ito_2,
+        mode='lines',
+        name='ito-2',
+        line=dict(
+            color='rgb(0,100,80)',
+            width=2)
+    )
+
+    trace_data = [trace_copper_half, trace_copper_1, trace_copper_2, trace_ink_1, trace_ink_2, trace_ito_half, trace_ito_1, trace_ito_2]
+
+    layout = go.Layout(
+        title="length test",
+        showlegend=True
+    )
+
+    fig = go.Figure(data=trace_data, layout=layout)
+    plotly.offline.plot(fig, filename='length-test.html')
+
+
+def test_materials():
+    trace = go.Bar(
+        x=['hand', 'macbook pro 15', '80p A5 notebook', 'porcelain cup', 'plastic bottle 500ml', 'plastic bottle 250ml',
+           'iphone 7 plus', 'iphone 6'],
+        y=[120, 92, 50, 40, 50, 40, 55, 40],
+        name='Rest of world',
+        marker=dict(
+            color='rgb(55, 83, 109)'
+        )
+    )
+    data = [trace]
+    layout = go.Layout(
+        title='Material test',
+        xaxis=dict(
+            tickfont=dict(
+                size=14,
+                color='rgb(107, 107, 107)'
+            )
+        ),
+        yaxis=dict(
+            title='USD (millions)',
+            titlefont=dict(
+                size=16,
+                color='rgb(107, 107, 107)'
+            ),
+            tickfont=dict(
+                size=14,
+                color='rgb(107, 107, 107)'
+            )
+        ),
+        legend=dict(
+            x=0,
+            y=1.0,
+            bgcolor='rgba(255, 255, 255, 0)',
+            bordercolor='rgba(255, 255, 255, 0)'
+        ),
+        barmode='group',
+        bargap=0.15,
+        bargroupgap=0.1
+    )
+
+    fig = go.Figure(data=data, layout=layout)
+    plotly.offline.plot(fig, filename='material.html')
+
+
+def plot_full():
+    data = pd.read_csv('data/3-1.5m-length/3-0.01m-full.csv')
+    temp_data = []
+    for row in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]:
+        for column in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+            index = row * 16 + column
+            s = list(data[str(index)])
+            new_signal = low_pass(s)
+            # temp_data.append(new_signal[424]- new_signal[10])
+            temp_data.append(s[5])
+
+    z_data=[]
+    for row in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]:
+        z_data.append(temp_data[row * 16:row * 16 + 15])
+
+    trace = go.Heatmap(z=z_data,
+                       x=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'],
+                       y=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+                          17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32],
+                       colorscale='Earth')   # Earth, Rainbow
+    # ['Greys', 'YlGnBu', 'Greens', 'YlOrRd', 'Bluered', 'RdBu',
+    #  'Reds', 'Blues', 'Picnic', 'Rainbow', 'Portland', 'Jet',
+    #  'Hot', 'Blackbody', 'Earth', 'Electric', 'Viridis']
+    data = [trace]
+    plotly.offline.plot(data, filename='full screen3.html')
+
+    # fig = ff.create_annotated_heatmap(z, x=x, y=y, annotation_text=z_text, colorscale='Viridis')
+    # py.iplot(fig, filename='annotated_heatmap_text')
+
+    # trace_data = []
+    # trace = go.Scatter(
+    #     x=np.arange(len(new_signal)),
+    #     y=new_signal,
+    #     mode='lines',
+    #     name='19-0',
+    #     marker=dict(
+    #         color=get_color()
+    #     )
+    # )
+    # trace_data.append(trace)
+    #
+    # layout = go.Layout(
+    #     title='full screen',
+    #     showlegend=True
+    # )
+    #
+    # fig = go.Figure(data=trace_data, layout=layout)
+    # plotly.offline.plot(fig, filename='full screen.html')
+
+
 def main():
     #import_data('1', '1')
     #plot_data(import_data('1', '1'))
@@ -335,8 +543,11 @@ def main():
     # filter_data()
     # 1, 3, 4, 10, 11, 13
     # compare_overlapping_touching('13')
-    compare_data('ito-2-2m-length')
+    # compare_data('selected material')
     # compare_overlapping_screen()
+    # length_test_on_width_material()
+    # plot_full()
+    test_materials()
 
 
 main()
