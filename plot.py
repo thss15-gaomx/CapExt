@@ -333,9 +333,9 @@ def length_test_on_width_material():
 
     copper_half = [625, 560, 467, 215, 90, 45, 30, 20]
     copper_1 = [880, 685, 425, 240, 110, 70, 44, 32]
-    copper_2 = [1020, 830, 400, 135, 180, 110, 60, 47]   # 0.05, 0.1
+    copper_2 = [1020, 830, 510, 370, 180, 110, 60, 47]
 
-    ink_half = []
+    ink_half = [645, 510, 370, 343, 97, 53, 45, 30]
     ink_1 = [650, 633, 388, 357, 200, 95, 65, 35]
     ink_2 = [825, 690, 512, 337, 129, 82, 65, 41]
 
@@ -373,6 +373,17 @@ def length_test_on_width_material():
         line=dict(
             color='rgb(205, 12, 24)',
             width=2)
+    )
+
+    trace_ink_half = go.Scatter(
+        x=length,
+        y=copper_half,
+        mode='lines',
+        name='ink-0.5',
+        line=dict(
+            color='rgb(22, 96, 167)',
+            width=2,
+            dash='dash')
     )
 
     trace_ink_1 = go.Scatter(
@@ -428,7 +439,7 @@ def length_test_on_width_material():
             width=2)
     )
 
-    trace_data = [trace_copper_half, trace_copper_1, trace_copper_2, trace_ink_1, trace_ink_2, trace_ito_half, trace_ito_1, trace_ito_2]
+    trace_data = [trace_copper_half, trace_copper_1, trace_copper_2, trace_ink_half, trace_ink_1, trace_ink_2, trace_ito_half, trace_ito_1, trace_ito_2]
 
     layout = go.Layout(
         title="length test",
@@ -459,7 +470,7 @@ def test_materials():
             )
         ),
         yaxis=dict(
-            title='USD (millions)',
+            title='diff data',
             titlefont=dict(
                 size=16,
                 color='rgb(107, 107, 107)'
@@ -543,11 +554,11 @@ def main():
     # filter_data()
     # 1, 3, 4, 10, 11, 13
     # compare_overlapping_touching('13')
-    # compare_data('selected material')
+    # compare_data('ink-0.5-1m-length')
     # compare_overlapping_screen()
-    # length_test_on_width_material()
+    length_test_on_width_material()
     # plot_full()
-    test_materials()
+    # test_materials()
 
 
 main()
