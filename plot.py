@@ -214,7 +214,7 @@ def compare_overlapping_touching(index):
 def compare_data(folder):
     trace_data = []
 
-    path = "data/" + folder
+    path = "data/P10/ito-0.5-3m-length"
     files = os.listdir(path)
     for file in files:
         if file[-3:] == 'csv':
@@ -238,7 +238,7 @@ def compare_data(folder):
     )
 
     fig = go.Figure(data=trace_data, layout=layout)
-    plotly.offline.plot(fig, filename=folder + '2.html')
+    plotly.offline.plot(fig, filename='ito-0.5-3m.html')
 
 
 def compare_overlapping_screen():
@@ -328,7 +328,7 @@ def filter_data():
     plotly.offline.plot(fig, filename='low-pass-filter')
 
 
-def length_test_on_width_material():
+def length_test_on_width_material_p20():
     length = [0.01, 0.02, 0.05, 0.1, 0.25, 0.5, 0.75, 1]
 
     copper_half = [625, 560, 467, 215, 90, 45, 30, 20]
@@ -377,7 +377,7 @@ def length_test_on_width_material():
 
     trace_ink_half = go.Scatter(
         x=length,
-        y=copper_half,
+        y=ink_half,
         mode='lines',
         name='ink-0.5',
         line=dict(
@@ -442,12 +442,98 @@ def length_test_on_width_material():
     trace_data = [trace_copper_half, trace_copper_1, trace_copper_2, trace_ink_half, trace_ink_1, trace_ink_2, trace_ito_half, trace_ito_1, trace_ito_2]
 
     layout = go.Layout(
-        title="length test",
+        title="P20 Length Test",
         showlegend=True
     )
 
     fig = go.Figure(data=trace_data, layout=layout)
     plotly.offline.plot(fig, filename='length-test.html')
+
+
+def length_test_on_width_material_p10():
+    length = [0.01, 0.02, 0.05, 0.1, 0.25, 0.5, 0.75, 1, 1.5, 2, 2.5, 3]
+
+    copper_half = [1160, 961, 732, 506, 274, 125, 85, 61, 52, 29, 13, 11]
+    copper_1 = [1338, 1075, 787, 547, 251, 152, 114, 96, 76, 48, 42, 38]
+    copper_2 = [2016, 1828, 1580, 1150, 384, 212, 199, 143, 132, 86, 71, 70]
+
+    ito_half = [1160, 756, 569, 409, 154, 83, 59, 54, 22, 13, 11, 9]
+    ito_1 = [1284, 1105, 892, 619, 288, 171, 114, 102, 52, 47, 27, 20]
+    ito_2 = [1444, 1273, 802, 536, 322, 172, 122, 108, 63, 38, 35, 11]
+
+    trace_copper_half = go.Scatter(
+        x=length,
+        y=copper_half,
+        mode='lines',
+        name='copper-0.5',
+        line=dict(
+            color='rgb(205, 12, 24)',
+            width=2,
+            dash='dash')
+    )
+
+    trace_copper_1 = go.Scatter(
+        x=length,
+        y=copper_1,
+        mode='lines',
+        name='copper-1',
+        line=dict(
+            color='rgb(205, 12, 24)',
+            width=2,
+            dash='dot')
+    )
+
+    trace_copper_2 = go.Scatter(
+        x=length,
+        y=copper_2,
+        mode='lines',
+        name='copper-2',
+        line=dict(
+            color='rgb(205, 12, 24)',
+            width=2)
+    )
+
+    trace_ito_half = go.Scatter(
+        x=length,
+        y=ito_half,
+        mode='lines',
+        name='ito-0.5',
+        line=dict(
+            color='rgb(0,100,80)',
+            width=2,
+            dash='dash')
+    )
+
+    trace_ito_1 = go.Scatter(
+        x=length,
+        y=ito_1,
+        mode='lines',
+        name='ito-1',
+        line=dict(
+            color='rgb(0,100,80)',
+            width=2,
+            dash='dot')
+    )
+
+    trace_ito_2 = go.Scatter(
+        x=length,
+        y=ito_2,
+        mode='lines',
+        name='ito-2',
+        line=dict(
+            color='rgb(0,100,80)',
+            width=2)
+    )
+
+    trace_data = [trace_copper_half, trace_copper_1, trace_copper_2, trace_ito_half, trace_ito_1, trace_ito_2]
+
+    layout = go.Layout(
+        title="P10 Length Test",
+        showlegend=True
+    )
+
+    fig = go.Figure(data=trace_data, layout=layout)
+    plotly.offline.plot(fig, filename='length-test-p10.html')
 
 
 def test_materials():
@@ -554,9 +640,10 @@ def main():
     # filter_data()
     # 1, 3, 4, 10, 11, 13
     # compare_overlapping_touching('13')
-    # compare_data('ink-0.5-1m-length')
+    # compare_data('P10/ito--3m-length')
     # compare_overlapping_screen()
-    length_test_on_width_material()
+    length_test_on_width_material_p20()
+    # length_test_on_width_material_p10()
     # plot_full()
     # test_materials()
 

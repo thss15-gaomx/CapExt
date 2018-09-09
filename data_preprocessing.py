@@ -8,7 +8,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import time
 import os
 
-
+# p10: 28 * 16
 
 def convert_time(origin_time):
     date_time, millisecond = origin_time.split('.')
@@ -25,7 +25,7 @@ def count_index(num):
 # for 32<=i<47: point_value[i] = raw_diff_data[(row_num-1)*col_num+i-row_num+1], where row_num=32 and col_num=16
 def count_index2(num):
     col_num = 16
-    return col_num * num + 1
+    return col_num * num + 2
 
 
 def dict2list(dic:dict):
@@ -71,6 +71,7 @@ def convert_full_screen(origin_file, new_file):
             if not lines:
                 break
             for line in lines:
+                print(line)
                 content = line.split(' ')
                 time = convert_time(content[0])
                 data[time] = content[1:-65]
@@ -134,12 +135,12 @@ def main():
     #     convert_file(file_name, new, [6, 7, 8, 9])
     # draw_chart()
 
-    path = "data/ink-0.5-1m-length"
+    path = "data/P10/ito-0.5-3m-length"
     files = os.listdir(path)
     for file in files:
         if file[-3:] == 'txt':
             # num = file[file.find('-') + 1:-4]
-            convert_file(path + '/' + file, path + '/' + file[:-4] + '.csv', [22])
+            convert_file(path + '/' + file, path + '/' + file[:-4] + '.csv', [12])
 
     # full screen
     # convert_full_screen("data/3-1.5m-length/3-0.01m.txt", "data/3-1.5m-length/3-0.01m-full.csv")
