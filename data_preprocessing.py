@@ -25,7 +25,7 @@ def count_index(num):
 # for 32<=i<47: point_value[i] = raw_diff_data[(row_num-1)*col_num+i-row_num+1], where row_num=32 and col_num=16
 def count_index2(num):
     col_num = 16
-    return col_num * num + 2
+    return col_num * num + 1
 
 
 def dict2list(dic:dict):
@@ -51,7 +51,7 @@ def convert_file(origin_file, new_file, points):
                     value.append(content[count_index2(point)])
                 data[time] = value
 
-        f.write('time,value\n')
+        f.write('time,13,15,17,19,21,23\n')
         for item in sorted(dict2list(data), key=lambda x: x[0], reverse=False):
             f.write(str(item[0]))
             for point in item[1]:
@@ -71,7 +71,6 @@ def convert_full_screen(origin_file, new_file):
             if not lines:
                 break
             for line in lines:
-                print(line)
                 content = line.split(' ')
                 time = convert_time(content[0])
                 data[time] = content[1:-65]
@@ -135,15 +134,15 @@ def main():
     #     convert_file(file_name, new, [6, 7, 8, 9])
     # draw_chart()
 
-    path = "data/P10/ito-0.5-3m-length"
+    path = "data/P20/overlapping-1-3*3-1m-touch"
     files = os.listdir(path)
     for file in files:
         if file[-3:] == 'txt':
             # num = file[file.find('-') + 1:-4]
-            convert_file(path + '/' + file, path + '/' + file[:-4] + '.csv', [12])
+            convert_file(path + '/' + file, path + '/' + file[:-4] + '.csv', [13, 15, 17, 19, 21, 23])
 
     # full screen
-    # convert_full_screen("data/3-1.5m-length/3-0.01m.txt", "data/3-1.5m-length/3-0.01m-full.csv")
+    # convert_full_screen("data/p20/overlapping-length-test/1m.txt", "data/p20/overlapping-length-test/1m-fullscreen.csv")
 
     # path = "data/overlapping"
     # files = os.listdir(path)

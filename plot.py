@@ -214,18 +214,42 @@ def compare_overlapping_touching(index):
 def compare_data(folder):
     trace_data = []
 
-    path = "data/P10/ito-0.5-3m-length"
+    path = "data/P20/overlapping-length-test"
     files = os.listdir(path)
     for file in files:
         if file[-3:] == 'csv':
             data = pd.read_csv(path + '/' + file)
-            s = list(data['value'])
+            # s = list(data['value'])
+            # new_signal = low_pass(s)
+            # trace = go.Scatter(
+            #     x=np.arange(len(new_signal)),
+            #     y=new_signal,
+            #     mode='lines',
+            #     name=file[:-3],
+            #     marker=dict(
+            #         color=get_color()
+            #     )
+            # )
+            # trace_data.append(trace)
+            s = list(data['down'])
             new_signal = low_pass(s)
             trace = go.Scatter(
                 x=np.arange(len(new_signal)),
                 y=new_signal,
                 mode='lines',
-                name=file[:-3],
+                name=file[:-3] + " down",
+                marker=dict(
+                    color=get_color()
+                )
+            )
+            trace_data.append(trace)
+            s = list(data['up'])
+            new_signal = low_pass(s)
+            trace = go.Scatter(
+                x=np.arange(len(new_signal)),
+                y=new_signal,
+                mode='lines',
+                name=file[:-3] + "up",
                 marker=dict(
                     color=get_color()
                 )
@@ -238,14 +262,14 @@ def compare_data(folder):
     )
 
     fig = go.Figure(data=trace_data, layout=layout)
-    plotly.offline.plot(fig, filename='ito-0.5-3m.html')
+    plotly.offline.plot(fig, filename='overlapping-length-test.html')
 
 
 def compare_overlapping_screen():
     trace_data = []
 
-    data = pd.read_csv("data/yogamat/1,2.csv")
-    points = ['2', '4', '6', '8', '10', '12', '14', '16', '18', '20', '22', '24', '26', '28']
+    data = pd.read_csv("data/p20/overlapping-1-3*3-1m-touch/0-1m.csv")
+    points = ['13', '15', '17', '19', '21', '23']
     for point in points:
         s = list(data[point])
         new_signal = low_pass(s)
@@ -261,12 +285,12 @@ def compare_overlapping_screen():
         trace_data.append(trace)
 
     layout = go.Layout(
-        title='yogamat',
+        title='3*3-0-1m-touch',
         showlegend=True
     )
 
     fig = go.Figure(data=trace_data, layout=layout)
-    plotly.offline.plot(fig, filename='yogamat.html')
+    plotly.offline.plot(fig, filename='3-3-0-touch.html')
 
 
 def filter_data():
@@ -536,6 +560,43 @@ def length_test_on_width_material_p10():
     plotly.offline.plot(fig, filename='length-test-p10.html')
 
 
+def overlapping_length_test_p20():
+    length = [0.25, 0.5, 0.75, 1]
+
+    copper_up = [155, 85, 54, 43]
+    copper_down = [165, 68, 55, 40]
+
+    trace_up = go.Scatter(
+        x=length,
+        y=copper_up,
+        mode='lines',
+        name='up',
+        line=dict(
+            color='rgb(205, 12, 24)',
+            width=2)
+    )
+
+    trace_down = go.Scatter(
+        x=length,
+        y=copper_down,
+        mode='lines',
+        name='down',
+        line=dict(
+            color='rgb(0,100,80)',
+            width=2)
+    )
+
+    trace_data = [trace_up, trace_down]
+
+    layout = go.Layout(
+        title="P20 Overlapping Length Test",
+        showlegend=True
+    )
+
+    fig = go.Figure(data=trace_data, layout=layout)
+    plotly.offline.plot(fig, filename='overlapping-length-test-p20.html')
+
+
 def test_materials():
     trace = go.Bar(
         x=['hand', 'macbook pro 15', '80p A5 notebook', 'porcelain cup', 'plastic bottle 500ml', 'plastic bottle 250ml',
@@ -582,7 +643,7 @@ def test_materials():
 
 
 def plot_full():
-    data = pd.read_csv('data/3-1.5m-length/3-0.01m-full.csv')
+    data = pd.read_csv('data/p20/overlapping-length-test/1m-fullscreen.csv')
     temp_data = []
     for row in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
                 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]:
@@ -590,8 +651,8 @@ def plot_full():
             index = row * 16 + column
             s = list(data[str(index)])
             new_signal = low_pass(s)
-            # temp_data.append(new_signal[424]- new_signal[10])
-            temp_data.append(s[5])
+            temp_data.append(new_signal[117]- new_signal[96])
+            # temp_data.append(s[5])
 
     z_data=[]
     for row in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -602,12 +663,12 @@ def plot_full():
                        x=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'],
                        y=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
                           17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32],
-                       colorscale='Earth')   # Earth, Rainbow
+                       colorscale='Viridis')   # Earth, Rainbow
     # ['Greys', 'YlGnBu', 'Greens', 'YlOrRd', 'Bluered', 'RdBu',
     #  'Reds', 'Blues', 'Picnic', 'Rainbow', 'Portland', 'Jet',
     #  'Hot', 'Blackbody', 'Earth', 'Electric', 'Viridis']
     data = [trace]
-    plotly.offline.plot(data, filename='full screen3.html')
+    plotly.offline.plot(data, filename='full screen-1m.html')
 
     # fig = ff.create_annotated_heatmap(z, x=x, y=y, annotation_text=z_text, colorscale='Viridis')
     # py.iplot(fig, filename='annotated_heatmap_text')
@@ -640,12 +701,13 @@ def main():
     # filter_data()
     # 1, 3, 4, 10, 11, 13
     # compare_overlapping_touching('13')
-    # compare_data('P10/ito--3m-length')
-    # compare_overlapping_screen()
-    length_test_on_width_material_p20()
+    # compare_data('P20/overlapping-length-test')
+    compare_overlapping_screen()
+    # length_test_on_width_material_p20()
     # length_test_on_width_material_p10()
     # plot_full()
     # test_materials()
+    # overlapping_length_test_p20()
 
 
 main()
