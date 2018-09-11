@@ -19,18 +19,19 @@ def average_num(num):
 
 
 def get_list_average():
-    data = pd.read_csv('data/P20/ink-2.7mm-1m-length/1m-12.csv')
+    data = pd.read_csv('data/P20/1-1.5m-length/1-1m-10.csv')
     s = list(data['value'])
-    new_signal = low_pass(s)
-    print(average_num(new_signal[76:123]))
+    print(s[100:150])
+    print(average_num(s[100:150]))
+    print(np.std(s, ddof=1))
 
 
 def still_length_test_on_material_p20():
     length = [0.01, 0.02, 0.05, 0.1, 0.25, 0.5, 0.75, 1]
 
-    copper = [1.30, 0.11, 0.73, 697.61, 812.79, 921.4, 932.92, 935.12]
-    ito = [1.20, 1.15, 0.88, 587.37, 781.38, 903.08, 949.08, 965.13]
-    ink = [0.14, 0.15, 0.34, 614.31, 778.33, 856.02, 867.43, 880.95]
+    copper = [0.8, 1.1, 0.32, 696.56, 810.52, 922.82, 933.56, 935.76]
+    ito = [0.32, 0.44, 0.98, 586.20, 781.36, 904.08, 949.14, 965.36]
+    ink = [0.24, 0.44, 0.02, 603.86, 780.74, 857.82, 867.66, 880.86]
 
     trace_copper = go.Scatter(
         x=length,
@@ -74,7 +75,7 @@ def still_length_test_on_material_p20():
 
 
 def low_pass(data):
-    fc = 0.04
+    fc = 1
     b = 0.08
     N = int(np.ceil((4 / b)))
     if not N % 2: N += 1
@@ -275,13 +276,14 @@ def compare_overlapping_touching(index):
 def compare_data(folder):
     trace_data = []
 
-    path = "data/P20/ink-2.7mm-1m-length"
+    path = "data/P20/1-1.5m-length"
     files = os.listdir(path)
     for file in files:
         if file[-3:] == 'csv':
             data = pd.read_csv(path + '/' + file)
             s = list(data['value'])
-            new_signal = low_pass(s)
+            # new_signal = low_pass(s)
+            new_signal = s
             trace = go.Scatter(
                 x=np.arange(len(new_signal)),
                 y=new_signal,
