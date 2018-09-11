@@ -11,6 +11,67 @@ import random
 
 from scipy import signal
 
+def average_num(num):
+    nsum = 0
+    for i in range(len(num)):
+        nsum += num[i]
+    return nsum / len(num)
+
+
+def get_list_average():
+    data = pd.read_csv('data/P20/ink-2.7mm-1m-length/1m-12.csv')
+    s = list(data['value'])
+    new_signal = low_pass(s)
+    print(average_num(new_signal[76:123]))
+
+
+def still_length_test_on_material_p20():
+    length = [0.01, 0.02, 0.05, 0.1, 0.25, 0.5, 0.75, 1]
+
+    copper = [1.30, 0.11, 0.73, 697.61, 812.79, 921.4, 932.92, 935.12]
+    ito = [1.20, 1.15, 0.88, 587.37, 781.38, 903.08, 949.08, 965.13]
+    ink = [0.14, 0.15, 0.34, 614.31, 778.33, 856.02, 867.43, 880.95]
+
+    trace_copper = go.Scatter(
+        x=length,
+        y=copper,
+        mode='lines',
+        name='copper',
+        line=dict(
+            color='rgb(205, 12, 24)',
+            width=2)
+    )
+
+    trace_ito = go.Scatter(
+        x=length,
+        y=ito,
+        mode='lines',
+        name='ito',
+        line=dict(
+            color='rgb(0,100,80)',
+            width=2)
+    )
+
+    trace_ink = go.Scatter(
+        x=length,
+        y=ink,
+        mode='lines',
+        name='ink',
+        line=dict(
+            color='rgb(22, 96, 167)',
+            width=2)
+    )
+
+    trace_data = [trace_copper, trace_ito, trace_ink]
+
+    layout = go.Layout(
+        title="P20 Initial Data",
+        showlegend=True
+    )
+
+    fig = go.Figure(data=trace_data, layout=layout)
+    plotly.offline.plot(fig, filename='initial-test-p20.html')
+
 
 def low_pass(data):
     fc = 0.04
@@ -214,55 +275,55 @@ def compare_overlapping_touching(index):
 def compare_data(folder):
     trace_data = []
 
-    path = "data/P20/overlapping-length-test"
+    path = "data/P20/ink-2.7mm-1m-length"
     files = os.listdir(path)
     for file in files:
         if file[-3:] == 'csv':
             data = pd.read_csv(path + '/' + file)
-            # s = list(data['value'])
+            s = list(data['value'])
+            new_signal = low_pass(s)
+            trace = go.Scatter(
+                x=np.arange(len(new_signal)),
+                y=new_signal,
+                mode='lines',
+                name=file[:-3],
+                marker=dict(
+                    color=get_color()
+                )
+            )
+            trace_data.append(trace)
+            # s = list(data['down'])
             # new_signal = low_pass(s)
             # trace = go.Scatter(
             #     x=np.arange(len(new_signal)),
             #     y=new_signal,
             #     mode='lines',
-            #     name=file[:-3],
+            #     name=file[:-3] + " down",
             #     marker=dict(
             #         color=get_color()
             #     )
             # )
             # trace_data.append(trace)
-            s = list(data['down'])
-            new_signal = low_pass(s)
-            trace = go.Scatter(
-                x=np.arange(len(new_signal)),
-                y=new_signal,
-                mode='lines',
-                name=file[:-3] + " down",
-                marker=dict(
-                    color=get_color()
-                )
-            )
-            trace_data.append(trace)
-            s = list(data['up'])
-            new_signal = low_pass(s)
-            trace = go.Scatter(
-                x=np.arange(len(new_signal)),
-                y=new_signal,
-                mode='lines',
-                name=file[:-3] + "up",
-                marker=dict(
-                    color=get_color()
-                )
-            )
-            trace_data.append(trace)
+            # s = list(data['up'])
+            # new_signal = low_pass(s)
+            # trace = go.Scatter(
+            #     x=np.arange(len(new_signal)),
+            #     y=new_signal,
+            #     mode='lines',
+            #     name=file[:-3] + "up",
+            #     marker=dict(
+            #         color=get_color()
+            #     )
+            # )
+            # trace_data.append(trace)
 
     layout = go.Layout(
-        title=folder,
+        title="copper-1-length",
         showlegend=True
     )
 
     fig = go.Figure(data=trace_data, layout=layout)
-    plotly.offline.plot(fig, filename='overlapping-length-test.html')
+    plotly.offline.plot(fig, filename='copper-1-length.html')
 
 
 def compare_overlapping_screen():
@@ -702,12 +763,14 @@ def main():
     # 1, 3, 4, 10, 11, 13
     # compare_overlapping_touching('13')
     # compare_data('P20/overlapping-length-test')
-    compare_overlapping_screen()
+    # compare_overlapping_screen()
     # length_test_on_width_material_p20()
     # length_test_on_width_material_p10()
     # plot_full()
     # test_materials()
     # overlapping_length_test_p20()
+    # get_list_average()
+    still_length_test_on_material_p20()
 
 
 main()
